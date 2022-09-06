@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.js"></script>
+  <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.js"></script>
+</head>
+<body>
+<h1>hello</h1>
+<script type="module">
+  import data from './data1.json' assert { type: "json" } //EXCEL 文件
+  data.sort((a, b) => {
+    return a.score - b.score
+  })
+  // console.log(data.slice(0, 10))
+  // const result = data.map(e => {
+  //   return {
+  //     name: e['企业名称'],
+  //     score: e['分值'],
+  //     scale: e['企业规模'],
+  //     address: e['详细地址']
+  //   }
+  // })
+  // const features = []
+  // result.forEach(e => {
+  //   features.push({
+  //     'type': 'Feature',
+  //     'properties': {
+  //       ...e
+  //     },
+  //     'geometry': {
+  //       'type': 'Point',
+  //       'coordinates': [
+  //         e['lng'],
+  //         e['lat']
+  //       ]
+  //     }
+  //   })
+  // })
+  // console.log('features',features)
+  // const content = JSON.stringify({
+  //   'type': 'FeatureCollection',
+  //   'features': features
+  // });
+  const content = JSON.stringify(data)
+  var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+  saveAs(blob, "data1.json");
+</script>
+</body>
+</html>

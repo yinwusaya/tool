@@ -1,0 +1,171 @@
+﻿/**
+ * 页面样式
+ */
+
+/* =======
+   基本默认设置
+   ======= */
+
+html {
+    font-size: 62.5%;
+    color: #222;
+    
+}
+::selection {
+    background-color: #b3d4fc;
+    text-shadow: none;
+}
+ul {
+    margin: 0;
+    padding: 0;
+}
+li {
+    list-style: none;
+}
+
+
+/* =======
+   工具样式
+   ======= */
+
+.center-block {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+.pull-right {
+    float: right !important;
+}
+.pull-left {
+    float: left !important;
+}
+.text-right {
+    text-align: right !important;
+}
+.text-left {
+    text-align: left !important;
+}
+.text-center {
+    text-align: center !important;
+}
+.hide {
+    display: none !important;
+}
+.show {
+    display: block !important;
+}
+.invisible {
+    visibility: hidden;
+}
+.text-hide {
+    font:0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+}
+.clearfix:before,/*防止margin叠加*/
+.clearfix:after{
+    content: ' ';
+    display: table;
+}
+.clearfix:after{
+    clear: both;
+}
+
+/* =======
+   浏览器更新提示
+   ======= */
+.browser-upgrade {
+    margin: 0;
+    padding: 1rem;
+    background: #ccc;
+}
+
+/* =======
+   自定义页面样式
+   ======= */
+
+body {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    background-color: #f7f7f7;
+}
+a {
+    color: #666;
+    text-decoration: none;
+}
+a:hover,a:active {
+    color: #0ae;
+    text-decoration: underline;
+}
+
+/* 网站头部 */
+
+
+/* 网站主体 */
+.container{
+    width: 100%;
+    margin-bottom: 15rem;
+}
+.clearfix::after{
+    visibility: hidden;
+    clear: both;
+    content: " ";
+    display: block;
+    height: 0;
+}
+#configImg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+.configCan{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.control{
+    padding: 0px 10px 10px 10px;
+}
+.mini-box{/*锚点样式*/
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border: 1px solid #1984ec;
+    position: absolute;
+}
+.mini-box-down{/*锚点选中样式*/
+    background-color: #1984ec;
+}
+.closeP{/*闭合路径鼠标样式*/
+    cursor:pointer;
+}
+.delP{/*删除锚点鼠标样式*/
+    cursor:pointer;
+}
+.move{
+    cursor: move;
+}
+.mini-cir{/*圆点样式*/
+    position: absolute;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #1984ec;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+.mini-cir-down{/*圆点选中样式*/
+    background-color: #1984ec;
+}
+#drawLine{
+    top: 0;
+    left: 0;
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    z-index: 999;
+}
+/* 底部 */

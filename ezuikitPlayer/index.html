@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="ezuikit.js"></script>
+</head>
+<body>
+    <div id="video"></div>
+    <script>
+        const a = () => {
+            const video = document.getElementById('video')
+            const videoPlay = new EZUIKit.EZUIKitPlayer({
+                width: 500,
+                height: 260,
+                autoplay: true,
+                url: 'ezopen://open.ys7.com/E04269701/10.hd.live',
+                id: 'video', // 视频容器ID
+                accessToken: 'at.a93fcoz8aewqfk07ciz0lny23wxkz0wy-9gvmufc3ry-17r00r5-ibl5ie3fs',
+                handleError: () => {
+                    console.log('播放错误，尝试重播')
+                }
+            })
+        }
+        a()
+        const b = {
+            toString: function() {
+                console.log('bbb toString')
+            }
+        }
+    </script>
+</body>
+</html>

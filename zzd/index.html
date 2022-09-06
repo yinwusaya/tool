@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>浙政钉扫码登录</title>
+</head>
+<body>
+    <iframe
+        width="800"
+        height="400"
+        src="http://localhost/data-deal">
+    </iframe>
+    <script type="application/javascript">
+        window.addEventListener('message', function(event) {
+            // 这里的event.data 就是登录成功的信息
+            // 数据格式：{ "code": "aaaa", "state": "bbbb" }
+            alert(JSON.stringify(event.data));
+            window.location.href = 'http://g-dt.netmi.com.cn/screen';
+        });
+    </script>
+</body>
+</html>

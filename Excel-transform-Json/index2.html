@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/xlsx.full.min.js"></script>
+    <script src="../js/FileSaver.js"></script>
+</head>
+<body>
+<input type="file" id="my_file_input" />
+<div id='my_file_output'></div>
+<script>
+    let oFileIn = document.getElementById("my_file_input")
+    const localTransform = (oEvent) => {
+        // Get The File From The Input
+        var oFile = oEvent.target.files[0];
+        var sFilename = oFile.name;
+        // Create A File Reader HTML5
+        var reader = new FileReader();
+        // Ready The Event For When A File Gets Selected
+        reader.onload = function(e) {
+            var data = e.target.result;
+            /* Call XLSX */
+            var workbook = XLSX.read(data, {
+                type: "binary"
+            });
+
+            /* DO SOMETHING WITH workbook HERE */
+            var first_sheet_name = workbook.SheetNames[0];
+            /* Get worksheet */
+            var worksheet = workbook.Sheets[first_sheet_name];
+            const result = XLSX.utils.sheet_to_json(worksheet, {
+                raw: true
+            })
+            console.log(result);
+            const content = JSON.stringify(result);
+            var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+            saveAs(blob, "data.json");
+        };
+        // Tell JS To Start Reading The File.. You could delay this if desired
+        reader.readAsBinaryString(oFile);
+    }
+
+    if (oFileIn.addEventListener) {
+        oFileIn.addEventListener('change',localTransform,false)
+    }
+
+    const netTransform = (url) => {
+        var oReq = new XMLHttpRequest();
+        oReq.open("GET", url, true);
+        oReq.responseType = "arraybuffer";
+
+        oReq.onload = function(e) {
+            var arraybuffer = oReq.response;
+
+            /* convert data to binary string */
+            var data = new Uint8Array(arraybuffer);
+            var arr = new Array();
+            for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+            var bstr = arr.join("");
+
+            /* Call XLSX */
+            var workbook = XLSX.read(bstr, {
+                type: "binary"
+            });
+
+            /* DO SOMETHING WITH workbook HERE */
+            var first_sheet_name = workbook.SheetNames[0];
+            /* Get worksheet */
+            var worksheet = workbook.Sheets[first_sheet_name];
+            console.log(XLSX.utils.sheet_to_json(worksheet, {
+                raw: true
+            }));
+        }
+
+        oReq.send();
+    }
+
+</script>
+</body>
+</html>

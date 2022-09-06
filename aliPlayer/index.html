@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./hashes.js"></script>
+</head>
+<body>
+  <script>
+      function replaceRepeatList(target, key, repeat) {
+          for (var i = 0; i < repeat.length; i++) {
+              var item = repeat[i];
+
+              if (Array.isArray(item)) {
+                  replaceRepeatList(target, `${key}.${i + 1}`, item);
+              } else if (item && typeof item === 'object') {
+                  const keys = Object.keys(item);
+                  for (var j = 0; j < keys.length; j++) {
+                      if (Array.isArray(item[keys[j]])) {
+                          replaceRepeatList(target, `${key}.${i + 1}.${keys[j]}`, item[keys[j]]);
+                      } else {
+                          target[`${key}.${i + 1}.${keys[j]}`] = item[keys[j]];
+                      }
+                  }
+              } else {
+                  target[`${key}.${i + 1}`] = item;
+              }
+          }
+      }
+
+      function flatParams(params) {
+          var target = {};
+          var keys = Object.keys(params);
+          for (let i = 0; i < keys.length; i++) {
+              var key = keys[i];
+              var value = params[key];
+              if (Array.isArray(value)) {
+                  replaceRepeatList(target, key, value);
+              } else {
+                  target[key] = value;
+              }
+          }
+          return target;
+      }
+
+      function normalize(params) {
+          var list = [];
+          var flated = flatParams(params);
+          var keys = Object.keys(flated).sort();
+          for (let i = 0; i < keys.length; i++) {
+              var key = keys[i];
+              var value = flated[key];
+              list.push([encode(key), encode(value)]); //push []
+          }
+          return list;
+      }
+
+      function canonicalize(normalized) {
+          var fields = [];
+          for (var i = 0; i < normalized.length; i++) {
+              var [key, value] = normalized[i];
+              fields.push(key + '=' + value);
+          }
+          return fields.join('&');
+      }
+
+      function encode(str) {
+          var result = encodeURIComponent(str);
+          return result.replace(/!/g, '%21')
+              .replace(/'/g, '%27')
+              .replace(/\(/g, '%28')
+              .replace(/\)/g, '%29')
+              .replace(/\*/g, '%2A');
+      }
+
+      // signature
+      function calSignature(action, params = {}, opts = {}) {
+          const method = (opts.method || 'GET').toUpperCase(); // POST OR GET
+          const normalized = normalize(params);
+          const canonicalized = canonicalize(normalized);
+          // 2.1 get string to sign
+          const stringToSign = `${method}&${encode('/')}&${encode(canonicalized)}`;
+          // 2.2 get signature
+          const key = this.accessKeySecret + '&';
+          // const signature = kitx.sha1(stringToSign, key, 'base64');
+          hmac.compute(key, msg, hash).then( (hmac) => {
+              // now you get a keyed-hash of msg in Uint8Array
+          });
+          var signature = new Hashes.SHA1().hex(stringToSign)
+          // add signature
+          normalized.push(['Signature', encode(signature)]);
+          // 3. generate final url
+          // const url = opts.method === 'POST' ? `${this.endpoint}/` : `${this.endpoint}/?${canonicalize(normalized)}`;
+          console.log('normalize',normalized)
+          return normalized
+      }
+
+      function str2ab(str) {
+          var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+          var bufView = new Uint16Array(buf);
+          for (var i=0, strLen=str.length; i<strLen; i++) {
+              bufView[i] = str.charCodeAt(i);
+          }
+          return buf;
+      }
+
+      calSignature("",{a:"b",c:"b",d:"e"},{method:"GET"})
+  </script>
+</body>
+</html>

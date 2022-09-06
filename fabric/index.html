@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div>
+  <button onclick="setzoom(0.1)">放大</button>
+  <button onclick="setzoom(-0.1)">缩小</button>
+</div>
+<canvas id="canvasBox" width="600" height="600" style="border: 1px solid #ccc;"></canvas>
+
+<!-- 引入 Fabric.js -->
+<script src="https://cdn.bootcdn.net/ajax/libs/fabric.js/521/fabric.js"></script>
+
+<script>
+  const canvas = new fabric.Canvas('canvasBox')
+
+  fabric.Image.fromURL('./bg.jpg', img => {
+    canvas.setBackgroundImage(img)
+    canvas.renderAll()
+  })
+
+  canvas.on('mouse:wheel', opt => {
+    console.log('opt',canvas)
+    const delta = opt.e.deltaY
+    let zoom = canvas.getZoom()
+    zoom *= 0.999 ** delta
+    if (zoom > 20) zoom = 20
+    if (zoom < 0.01) zoom = 0.01
+    canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom)
+  })
+  // 设置画布缩放级别
+  function setzoom(val) {
+    let zoom = canvas.getZoom() // 获取画布当前缩放级别
+    zoom += val
+    console.log('zoom',zoom)
+    canvas.setZoom(zoom) // 设置画布缩放级别
+  }
+</script>
+</body>
+</html>

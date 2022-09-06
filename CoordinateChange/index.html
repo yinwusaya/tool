@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/proj4.js"></script>
+    <script src="../js/FileSaver.js"></script>
+</head>
+<body>
+    <h1>坐标系转化</h1>
+    <script type="module">
+        import data from './area.json' assert { type: "json" }
+        var firstProjection = '+proj=longlat +datum=WGS84';
+        const p1 = '+proj=tmerc +x_0=500000 +lon_0=120 +approx=6378137 +es=0.006694380022900787'
+        let result = []
+        const cd = data.features.map(e => {
+            if(e.geometry.coordinates.length > 1) {
+                console.log(e)
+            }
+            const arr = e.geometry.coordinates.map(n => {
+                let obj = {...e.properties}
+                const arr1 = n.map(m => {
+                    if(m.length > 2) {
+                        const arr2 = m.map(z => {
+                            return proj4(p1,firstProjection,z)
+                        })
+                        return arr2
+                    } else {
+                        return proj4(p1,firstProjection,m)
+                    }
+                })
+                obj.coordinates = JSON.stringify(arr1)
+                result.push(obj)
+                return arr1
+            })
+            return {
+                ...e,
+                'geometry': {
+                    'type': 'Polygon',
+                    'coordinates': arr
+                },
+            }
+        })
+        //保存文件
+        var content = JSON.stringify(result);
+        var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "data1.json");
+    </script>
+</body>
+</html>
